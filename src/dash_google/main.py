@@ -25,19 +25,19 @@ app.layout = html.Div([
     dcc.Graph(id='my-graph')
 ])
 
+
 @app.callback(Output('my-graph', 'figure'), [Input('my-dropdown', 'value')])
-def update_graph(selected_dropdown_value)
+def update_graph(selected_dropdown_value):
     df = web.DataReader(
         selected_dropdown_value, data_source='iex',
         start=dt(2017, 1, 1), end=dt.now())
     return {
-        'data' [{
-            'x' df.index,
-            'y' df.close
+        'data': [{
+            'x': df.index,
+            'y': df.close
         }]
     }
 
 
-
-if __name__ == __main__
+if __name__ == '__main__':
     app.run_server(debug=True, port=8080)
