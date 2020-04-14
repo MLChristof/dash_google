@@ -2,15 +2,14 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+dash_app = dash.Dash()
+app = dash_app.server
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-app.layout = html.Div(children=[
+dash_app.layout = html.Div(children=[
     html.H1(children='Hello Dash'),
 
     html.Div(children='''
-        Dash: A web application framework for Python.
+        This is Dash running on Google App Engine.
     '''),
 
     dcc.Graph(
@@ -28,4 +27,4 @@ app.layout = html.Div(children=[
 ])
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8080)
+    dash_app.run_server(debug=True)
