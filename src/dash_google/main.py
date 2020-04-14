@@ -1,43 +1,31 @@
 import dash
-from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
-from pandas_datareader import data as web
-from datetime import datetime as dt
-import flask
 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+app.layout = html.Div(children=[
+    html.H1(children='Hello Dash'),
 
-app.layout = html.Div([
-    html.H1('Stock Tickers'),
-    dcc.Dropdown(
-        id='my-dropdown',
-        options=[
-            {'label' 'Coke', 'value' 'COKE'},
-            {'label' 'Tesla', 'value' 'TSLA'},
-            {'label' 'Apple', 'value' 'AAPL'}
-        ],
-        value='COKE'
-    ),
-    dcc.Graph(id='my-graph')
+    html.Div(children='''
+        Dash: A web application framework for Python.
+    '''),
+
+    dcc.Graph(
+        id='example-graph',
+        figure={
+            'data': [
+                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
+                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
+            ],
+            'layout': {
+                'title': 'Dash Data Visualization'
+            }
+        }
+    )
 ])
-
-
-@app.callback(Output('my-graph', 'figure'), [Input('my-dropdown', 'value')])
-def update_graph(selected_dropdown_value):
-    df = web.DataReader(
-        selected_dropdown_value, data_source='iex',
-        start=dt(2017, 1, 1), end=dt.now())
-    return {
-        'data': [{
-            'x': df.index,
-            'y': df.close
-        }]
-    }
-
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8080)
